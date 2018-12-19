@@ -1,0 +1,60 @@
+@page
+@model CrimeByMonthModel
+
+
+@{
+   ViewData["Title"] = "Crimes by Month";
+}
+
+<h2>Crimes by Month</h2> 
+
+
+
+@{  
+  var Labels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Months);
+  var Amounts = Newtonsoft.Json.JsonConvert.SerializeObject(Model.NumCrimes); 
+}  
+
+
+<br />
+Raw data: @Html.Raw(Amounts)
+<br />
+<br />
+
+
+
+
+<div class="box-body">  
+  <div class="chart-container">  
+     <canvas id="myChart"></canvas>  
+  </div>  
+</div>  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js">
+</script>
+
+<script>
+var ctx = document.getElementById("myChart");
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: @Html.Raw(Labels),
+        datasets: [{
+            label: "# of crimes",  
+            data: @Html.Raw(Amounts),
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</script>  
+
+
